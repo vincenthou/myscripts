@@ -1,0 +1,36 @@
+Options +FollowSymLinks
+RewriteEngine On
+
+AddEncoding gzip .gz
+AddEncoding gzip .gzip
+<FilesMatch "\.(js.gz|js.gzip)$">
+  ForceType text/javascript
+</FilesMatch>
+<FilesMatch "\.(css.gz|css.gzip)$">
+  ForceType text/css
+</FilesMatch>
+
+RewriteCond %{REQUEST_URI} .*/http-bind
+RewriteRule (.*) /http-bind [L]
+
+RewriteRule crossdomain.xml crossdomain.xml [QSA,L]
+RewriteRule wireframe/*.html$  wireframe/$1.html
+
+RewriteCond %{REQUEST_URI} (/|\.php|\.htm|\.xml|\.feed|robots\.txt|\.raw|/[^.]*)$  [NC]
+RewriteRule site/(.*) index.php
+RewriteRule report/(.*) index.php
+RewriteRule resource/(.*) index.php
+RewriteRule customView/(.*) index.php
+RewriteRule wechat/(.*) index.php
+
+RewriteRule (.*)/stat/(.*) index.php
+RewriteRule ^/?api/(.*) index.php [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^/?(.*) app/index.html [L]
+
+RewriteCond %{REQUEST_URI} !^/index\.php
+RewriteCond %{REQUEST_URI} (/|\.php|\.htm|\.xml|\.feed|robots\.txt|\.raw|/[^.]*)$  [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule (.*) index.php
