@@ -14,7 +14,7 @@ module.exports = function(grunt) {
       clone: {
         options: {
             repository: 'git@git.augmentum.com.cn:augmarketing/campaign-portal.git',
-            branch: 'develop',
+            branch: '<%= pkg.branch %>',
             directory: '<%= pkg.rawFolder %>'
         }
       }
@@ -27,6 +27,17 @@ module.exports = function(grunt) {
             cwd: '<%= pkg.copyFolder %>',
             src: '**',
             dest: '<%= pkg.distName %>/',
+            dot: true
+          },
+        ]
+      },
+      wirefram: {
+        files:[
+          {
+            expand: true,
+            cwd: '<%= pkg.wireframeFolder %>',
+            src: '**',
+            dest: '<%= pkg.wireframeDistFolder %>/',
             dot: true
           },
         ]
@@ -49,7 +60,7 @@ module.exports = function(grunt) {
           from: /(Host'\s*=>\s*).+',/g,
           to: "$1'{MAIL_HOST}',"
         },{
-          from: /(Port'\s*=>\s*).+',/g,
+          from: /(Port'\s*=>\s*).+,/g,
           to: "$1'{MAIL_PORT}',"
         },{
           from: /(Username'\s*=>\s*).+',/g,
@@ -57,6 +68,9 @@ module.exports = function(grunt) {
         },{
           from: /(Password'\s*=>\s*).+',/g,
           to: "$1'{MAIL_PASSWORD}',"
+        },{
+          from: /(FromName'\s*=>\s*).+',/g,
+          to: "$1'Campaign Portal',"
         }]
       },
       paramsPHP: {
@@ -65,6 +79,20 @@ module.exports = function(grunt) {
         replacements: [{
           from: /(server_address'\s*=>\s*).+',/g,
           to: "$1'{AE_HOST}',"
+        }]
+      },
+      consolePHP: {
+        src: ['<%= pkg.distName %>/protected/config/console.php'],
+        dest: '<%= pkg.distName %>/protected/config/',
+        replacements: [{
+          from: /(connectionString'\s*=>\s*).+',/g,
+          to: "$1'mysql:host={DB_HOST};dbname={DB_NAME}',"
+        },{
+          from: /(username'\s*=>\s*).+',/g,
+          to: "$1'{DB_USERNAME}',"
+        },{
+          from: /(password'\s*=>\s*).+',/g,
+          to: "$1'{DB_PASSWORD}',"
         }]
       }
     },

@@ -1,8 +1,11 @@
 {
   "name": "deploy",
+  "branch": "socialmessage",
   "rawFolder": "rawRepo",
   "copyFolder": "rawRepo/src/",
   "distName": "campaignportal",
+  "wireframeFolder": "rawRepo/design/prototype",
+  "wireframeDistFolder": "campaignportal/wireframe",
   "version": "0.0.1",
   "engines": {
     "node": ">= 0.8.0"
