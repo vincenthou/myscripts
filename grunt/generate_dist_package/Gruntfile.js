@@ -30,17 +30,6 @@ module.exports = function(grunt) {
             dot: true
           },
         ]
-      },
-      wirefram: {
-        files:[
-          {
-            expand: true,
-            cwd: '<%= pkg.wireframeFolder %>',
-            src: '**',
-            dest: '<%= pkg.wireframeDistFolder %>/',
-            dot: true
-          },
-        ]
       }
     },
     replace: {
@@ -50,6 +39,12 @@ module.exports = function(grunt) {
         replacements: [{
           from: /(connectionString'\s*=>\s*).+',/g,
           to: "$1'mysql:host={DB_HOST};dbname={DB_NAME}',"
+        },{
+          from: /(connectionString'\s*=>\s*).+',\/\/mongo/g,
+          to: "$1'mongodb://{MONGO_DB_USERNAME}:{MONGO_DB_PASSWORD}@{MONGO_DB_HOST}/{MONGO_DB_NAME}',"
+        },{
+          from: /(dbName'\s*=>\s*).+',/g,
+          to: "$1'{MONGO_DB_NAME}',"
         },{
           from: /(username'\s*=>\s*).+',/g,
           to: "$1'{DB_USERNAME}',"
@@ -79,6 +74,9 @@ module.exports = function(grunt) {
         replacements: [{
           from: /(server_address'\s*=>\s*).+',/g,
           to: "$1'{AE_HOST}',"
+        },{
+          from: /(DEFAULT_DOMAIN'\s*=>\s*).+',/g,
+          to: "$1'{CP_DOMAIN}',"
         }]
       },
       consolePHP: {
